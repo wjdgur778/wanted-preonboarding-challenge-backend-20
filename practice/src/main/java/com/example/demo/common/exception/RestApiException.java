@@ -1,9 +1,15 @@
 package com.example.demo.common.exception;
 
-import ch.qos.logback.core.spi.ErrorCodes;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class RestApiException extends RuntimeException {
-    private final ErrorCode errorCode;
+    private final CommonErrorCode errorCode;
+
+    public RestApiException(CommonErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
+    }
+
+    public CommonErrorCode getErrorCode() {
+        return errorCode;
+    }
 }

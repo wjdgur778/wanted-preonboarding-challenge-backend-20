@@ -30,4 +30,12 @@ public enum CommonErrorCode implements ErrorCode{
         this.status = httpStatus;
         this.message = message;
     }
+    @Override
+    public HttpStatus getStatus() {
+        return this.status;
+    }
+    @Override
+    public String getMessage(){
+        return this.message;
+    }
 }
