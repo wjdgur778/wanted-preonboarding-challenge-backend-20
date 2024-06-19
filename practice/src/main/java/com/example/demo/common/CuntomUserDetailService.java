@@ -1,6 +1,8 @@
 package com.example.demo.common;
 
 import com.example.demo.common.dto.CustomUserDetail;
+import com.example.demo.common.exception.CommonErrorCode;
+import com.example.demo.common.exception.RestApiException;
 import com.example.demo.db.entity.User;
 import com.example.demo.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ public class CuntomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
         User user = userRepository.findByUserEmail(userEmail).orElseThrow(
-                ()-> new UsernameNotFoundException("유저 정보가 없습니다.")
+                ()-> new RestApiException(CommonErrorCode.MEMBER_NOT_FOUND)
         );
         return new CustomUserDetail(user);
     }

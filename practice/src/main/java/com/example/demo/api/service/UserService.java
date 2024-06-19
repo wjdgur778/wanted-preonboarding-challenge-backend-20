@@ -31,7 +31,6 @@ public class UserService {
     public User createUser(User user) {
         String encodePassword = passwordEncoder.encode(user.getUserPassword());
         if(checkEmail(user.getUserEmail())){
-            System.out.println("회원 존재");
             throw new RestApiException(CommonErrorCode.MEMBER_FOUND);
         }
         User update_user = new User(user.getUserEmail(), encodePassword, user.getUserName());
@@ -54,7 +53,6 @@ public class UserService {
         //해당 아이디가 있다면 입력된 비밀번호와 DB에 저장된 해시된 비밀번호와 비교를 해보자
         //다르다면 예외처리
         if (!passwordEncoder.matches(loginRequestDto.getUserPassword(), loginUser.getUserPassword())) {
-            System.out.println("memger_sign_in_failed 에러");
             throw new RestApiException(CommonErrorCode.MEMBER_SIGN_IN_FAILED);// 커스텀 예외로 예외처리하자
         }
 

@@ -3,7 +3,6 @@ package com.example.demo.api.controller;
 import com.example.demo.api.request.LoginRequestDto;
 import com.example.demo.api.request.SignupRequestDto;
 import com.example.demo.api.service.UserService;
-import com.example.demo.common.exception.ErrorCode;
 import com.example.demo.common.exception.RestApiException;
 import com.example.demo.common.model.Result;
 import jakarta.persistence.Table;
@@ -21,7 +20,6 @@ public class AuthController {
          final + RequiredArgsConstructor를 통해 의존성 주입 (생성자 주입)
      */
     private final UserService userService;
-
 
     /*
          spring boot version이 2.3이상부터 spring-boot-starter-web 의존성 내부에 있던 validation이
@@ -67,7 +65,7 @@ public class AuthController {
                 .build()
         );
     }
-    @GetMapping
+    @GetMapping("/look")
     public ResponseEntity<Result> look(){
         return ResponseEntity.status(200).body(Result.builder()
                 .Data(userService.getUser())

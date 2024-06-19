@@ -6,6 +6,7 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -33,7 +34,7 @@ public class JwtUtil {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -49,7 +50,10 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
-
+    public boolean shouldTokenBeRefreshed(String token) {
+        // 만료 15분 전이면 토큰을 refresh한다.
+        return extractExpiration(token).before(new Date(System.currentTimeMillis() + 15 * 60 * 1000));
+    }
     /*
         jwt 검증
      */

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum CommonErrorCode implements ErrorCode{
+
     MEMBER_FOUND(HttpStatus.BAD_REQUEST, "중복된 회원이 존재합니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원정보가 존재하지 않습니다."),
     MEMBER_SIGN_IN_FAILED(HttpStatus.NOT_FOUND, "아이디 또는 비밀번호가 일치하지 않습니다."),

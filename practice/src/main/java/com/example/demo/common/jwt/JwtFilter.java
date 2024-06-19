@@ -44,6 +44,11 @@ public class JwtFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                //토큰 만료시간이 15분 이하로 남으면 새로운 토큰을 발급한다.
+                if(jwtUtil.shouldTokenBeRefreshed(jwt)){
+                    String newToken = jwtUtil.generateToken(username);
+                    response.setHeader("Authorization", "Bearer " + newToken);
+                }
             }
         }
         chain.doFilter(request, response);
