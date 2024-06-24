@@ -2,26 +2,20 @@ package com.example.demo.api.service;
 
 import com.example.demo.api.request.RegistProductRequestDto;
 import com.example.demo.api.response.ProductDetailResponseDto;
+import com.example.demo.api.response.ProductListResponseDto;
 import com.example.demo.api.response.ProductResponseDto;
-import com.example.demo.common.exception.CommonErrorCode;
 import com.example.demo.common.exception.RestApiException;
 import com.example.demo.db.entity.Product;
 import com.example.demo.db.entity.Transaction;
 import com.example.demo.db.entity.User;
-import com.example.demo.db.entity.p_state;
 import com.example.demo.db.repository.ProductRepository;
 import com.example.demo.db.repository.TransactionRepository;
 import com.example.demo.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.example.demo.common.exception.CommonErrorCode.*;
@@ -98,4 +92,28 @@ public class ProductService {
                 .orElseThrow(()->new RestApiException(PRODUCT_NOT_FOUND));
         return ProductDetailResponseDto.from(product);
     }
+
+    //구매한 상품 목록 조회
+    public List<ProductListResponseDto> getPurchasedProductList(String userEmail){
+         return productRepository.findAllByBuyer_userEmail(userEmail).stream()
+                .filter(product -> {
+                    if(product.getProductState().equals(CONFIRMED))
+                    return true;
+                    return false;
+                }).map(product -> ProductListResponseDto.from(product))
+                 .collect(Collectors.toList());
+    }
+
+    //예약한 상품 목록
+    public List<ProductListResponseDto> getReservedProductList(String userEmail){
+        return productRepository.findAllByBuyer_userEmail(userEmail).stream()
+                .filter(product -> {
+                    if(product.getProductState().equals(RESERVED))
+                        return true;
+                    return false;
+                }).map(product -> ProductListResponseDto.from(product))
+                .collect(Collectors.toList());
+    }
+
+
 }

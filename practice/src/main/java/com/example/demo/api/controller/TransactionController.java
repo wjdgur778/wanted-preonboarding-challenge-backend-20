@@ -1,11 +1,15 @@
 package com.example.demo.api.controller;
 
+import com.example.demo.api.response.TransactionResponseDto;
 import com.example.demo.api.service.TransactionService;
 import com.example.demo.common.model.Result;
+import com.example.demo.db.entity.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,25 +30,41 @@ public class TransactionController {
          1. (회원)만 구매 가능하다
          2. 상품 id와 회원의 정보가 넘어온다.
      */
-    @PostMapping("/create/{productId}")
+    @GetMapping("/create/{productId}")
     public ResponseEntity<Result> create(Authentication authentication, @PathVariable Long productId) {
         String userEmail = authentication.getName();
+        TransactionResponseDto transaction = transactionService.create(productId, userEmail);
 
         return ResponseEntity.status(200).body(Result.builder()
-                .message("구매 요청 (예약)")
-                .Data(transactionService.create(productId, userEmail))
+                .message("구매 요청 (거래진행)")
+                .Data(transaction)
                 .build());
     }
 
+
     //판매 승인(구매 완료)
-    @PostMapping("/approval")
-    public void approval() {
+    @GetMapping("/approval/{transactionId}")
+    public ResponseEntity<Result> approval(Authentication authentication,@PathVariable Long transactionId) {
+        String userEmail = authentication.getName();
+        TransactionResponseDto transaction = transactionService.approval(transactionId, userEmail);
 
+        return ResponseEntity.status(200).body(Result.builder()
+                .message("판매 승인 (거래완료)")
+                .Data(transaction)
+                .build());
     }
 
-    //예약하기
-    @GetMapping("/reserve")
-    public void reserve() {
+    //거래내역 조회
 
-    }
+//    @GetMapping()
+//    public ResponseEntity<Result> getList(Authentication authentication) {
+//        String userEmail = authentication.getName();
+//        List <TransactionListResponseDto> transaction = transactionService
+//
+//        return ResponseEntity.status(200).body(Result.builder()
+//                .message("판매 승인 (거래완료)")
+//                .Data(transaction)
+//                .build());
+//    }
+
 }

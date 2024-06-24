@@ -24,6 +24,7 @@ public enum CommonErrorCode implements ErrorCode{
     DUPLICATED_DATA(HttpStatus.BAD_REQUEST, "중복된 데이터 저장 시도입니다."),
     INVALID_INPUT_DATE(HttpStatus.BAD_REQUEST, "잘못된 데이터 입력입니다.")
     ;
+
     private final HttpStatus status;
     private final String message;
 

@@ -76,6 +76,27 @@ public class ProductController {
                     .build());
         }
     }
+
+    //구매한 물품 리스트
+    @GetMapping("/purchasedlist")
+    public ResponseEntity<Result> getpurchasedProductList(Authentication authentication) {
+        String userEmail = authentication.getName();
+
+        return ResponseEntity.status(200).body(Result.builder()
+                .Data(productService.getPurchasedProductList(userEmail))
+                .message("구매한 물품 리스트 조회")
+                .build());
+    }
+    //예약한 물품 리스트
+    @GetMapping("/reservedlist")
+    public ResponseEntity<Result> getReservedProductList(Authentication authentication) {
+        String userEmail = authentication.getName();
+
+        return ResponseEntity.status(200).body(Result.builder()
+                .Data(productService.getReservedProductList(userEmail))
+                .message("판매자와 구매자를 제외한 상세조회")
+                .build());
+    }
 }
 
 
